@@ -20,6 +20,7 @@ compute :: (Applicative v, Foldable v, Num a)
         -> v a       -- ^ @x@ vector, with the observed numbers
         -> a         -- ^ predicted @y@ for this observation
 compute theta x = theta `dot` x
+{-# INLINE compute #-}
 
 -- | Cost function for a linear regression on a single observation
 cost :: (Applicative v, Foldable v, Floating a)
@@ -28,6 +29,7 @@ cost :: (Applicative v, Foldable v, Floating a)
      -> a         -- ^ expected @y@ for the observation
      -> a         -- ^ cost
 cost theta x y = 0.5 * (y - compute theta x) ^ (2 :: Int)
+{-# INLINE compute #-}
 
 -- | Cost function for a linear regression on a set of observations
 totalCost :: (Applicative v, Foldable v, Applicative f, Foldable f, Floating a)
@@ -38,6 +40,7 @@ totalCost :: (Applicative v, Foldable v, Applicative f, Foldable f, Floating a)
 totalCost theta ys xs =
   let Acc n (Sum s) = foldMap acc $ liftA2 (cost theta) xs ys
   in s / fromIntegral n
+{-# INLINE totalCost #-}
 
 -- | Given some observed \"predictions\" @ys@, the corresponding
 --   input values @xs@ and initial values for the model's parameters @theta0@,
@@ -82,3 +85,4 @@ regress :: (Traversable v, Applicative v, Foldable v, Applicative f, Foldable f,
 regress ys xs t0 =
   gradientDescent (\theta -> totalCost theta (fmap auto ys) (fmap (fmap auto) xs))
                   t0
+{-# INLINE regress #-}

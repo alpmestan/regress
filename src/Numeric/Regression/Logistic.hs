@@ -15,6 +15,7 @@ type Model f a = f a
 
 logit :: Floating a => a -> a
 logit x = 1 / (1 + exp (negate x))
+{-# INLINE logit #-}
 
 logLikelihood :: (Applicative v, Foldable v, Floating a)
               => Model v a -- theta vector
@@ -25,6 +26,7 @@ logLikelihood theta y x =
   y * log (logit z) + (1 - y) * log (1 - logit z)
 
   where z = theta `dot` x
+{-# INLINE logLikelihood #-}
 
 totalLogLikelihood :: (Applicative v, Foldable v, Applicative f, Foldable f, Floating a)
                    => a -- delta
@@ -37,6 +39,7 @@ totalLogLikelihood delta theta ys xs =
 
   where Acc n (Sum a) = foldMap acc $ liftA2 (logLikelihood theta) ys xs
         b = (/2) . getSum $ foldMap (\x -> Sum (x^(2::Int))) theta
+{-# INLINE totalLogLikelihood #-}
 
 -- | Given some observed \"predictions\" @ys@, the corresponding
 --   input values @xs@ and initial values for the model's parameters @theta0@,
@@ -77,3 +80,4 @@ regress :: (Traversable v, Applicative v, Foldable f, Applicative f, Ord a, Floa
 regress delta ys xs =
   gradientAscent $ \theta ->
     totalLogLikelihood (auto delta) theta (fmap auto ys) (fmap (fmap auto) xs)
+{-# INLINE regress #-}
