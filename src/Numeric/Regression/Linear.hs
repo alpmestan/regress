@@ -29,7 +29,7 @@ cost :: (Applicative v, Foldable v, Floating a)
      -> a         -- ^ expected @y@ for the observation
      -> a         -- ^ cost
 cost theta x y = 0.5 * (y - compute theta x) ^ (2 :: Int)
-{-# INLINE compute #-}
+{-# INLINE cost #-}
 
 -- | Cost function for a linear regression on a set of observations
 totalCost :: (Applicative v, Foldable v, Applicative f, Foldable f, Floating a)
