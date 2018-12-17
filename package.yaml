@@ -1,0 +1,34 @@
+name:                regress
+version:             0.1.1
+synopsis:            Linear and logistic regression through automatic differentiation
+description:
+  Linear and logistic regression through automatic differentiation
+  .
+  See "Numeric.Regression.Linear" and "Numeric.Regression.Logistic" for
+  docs and examples.
+
+homepage:            https://github.com/alpmestan/regress
+license:             BSD3
+license-file:        LICENSE
+author:              Alp Mestanogullari
+maintainer:          alpmestan@gmail.com
+copyright:           Alp Mestanogullari
+category:            Math
+extra-source-files:
+- README.md
+
+library:
+  exposed-modules:
+    - Numeric.Regression.Linear
+    - Numeric.Regression.Logistic
+  other-modules:
+    - Numeric.Regression.Internal
+  dependencies:
+    - base >=4.7 && <5
+    - ad
+    - vector
+
+  source-dirs: src
+  ghc-options:
+    - -O2
+    - -Wall

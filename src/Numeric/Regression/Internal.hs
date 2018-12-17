@@ -1,15 +1,15 @@
 module Numeric.Regression.Internal where
 
 import Control.Applicative
-import Data.Foldable
 import Data.Monoid
 
 data Acc a = Acc {-# UNPACK #-} !Int !a
 
+instance Semigroup a => Semigroup (Acc a) where
+  Acc m a <> Acc n b = Acc (m + n) (a <> b)
+
 instance Monoid a => Monoid (Acc a) where
   mempty = Acc 0 mempty
-
-  Acc m a `mappend` Acc n b = Acc (m + n) (a <> b)
 
 acc :: a -> Acc (Sum a)
 acc = Acc 1 . Sum

@@ -2,9 +2,7 @@ module Numeric.Regression.Linear
   (Model, compute, regress) where
 
 import Control.Applicative
-import Data.Foldable
 import Data.Monoid
-import Data.Traversable
 import Numeric.AD
 import Numeric.Regression.Internal
 
